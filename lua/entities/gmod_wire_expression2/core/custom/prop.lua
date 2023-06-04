@@ -167,7 +167,16 @@ function PropCore.CreateProp(self,model,pos,angles,freeze,isVehicle)
 end
 local CreateProp = PropCore.CreateProp
 
+local illegal_classes = {
+	[ "npc_grenade_frag" ] = true,
+	[ "rpg_missile" ] = true,
+	[ "npc_satchel" ] = true,
+	[ "prop_combine_ball" ] = true,
+}
+
 function PropCore.PhysManipulate(this, pos, rot, freeze, gravity, notsolid)
+	if illegal_classes[ this:GetClass() ] then return self:throw( "You cannot manipulate this entity class" ) end
+
 	local phys = this:GetPhysicsObject()
 	local physOrThis = IsValid(phys) and phys or this
 
