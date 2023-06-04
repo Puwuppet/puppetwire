@@ -5,9 +5,9 @@ TOOL.ClientConVar = {
 	model = "models/props_c17/oildrum001_explosive.mdl",
 	effect = "Explosion",
 	trigger = 1,		-- Wire input value to cause the explosion
-	damage = 200,		-- Damage to inflict
-	radius = 300,
-	removeafter = 0,
+	damage = 100,		-- Damage to inflict
+	radius = 200,
+	removeafter = 1,
 	affectother = 0,
 	notaffected = 0,
 	delaytime = 0,
@@ -66,8 +66,8 @@ function TOOL.BuildCPanel(panel)
 	WireToolHelpers.MakePresetControl(panel, "wire_explosive")
 	ModelPlug_AddToCPanel(panel, "Explosive", "wire_explosive", nil, 3)
 	panel:NumSlider("#Tool.wire_explosive.trigger", "wire_explosive_trigger", -10, 10, 0 )
-	panel:NumSlider("#Tool.wire_explosive.damage", "wire_explosive_damage", 0, 500, 0 )
-	panel:NumSlider("#Tool.wire_explosive.radius", "wire_explosive_radius", 1, 1500, 0 )
+	panel:NumSlider("#Tool.wire_explosive.damage", "wire_explosive_damage", 0, 100, 0 )
+	panel:NumSlider("#Tool.wire_explosive.radius", "wire_explosive_radius", 1, 200, 0 )
 	panel:NumSlider("#Tool.wire_explosive.delaytime", "wire_explosive_delaytime", 0, 60, 2 )
 	panel:NumSlider("#Tool.wire_explosive.delayreloadtime", "wire_explosive_delayreloadtime", 0, 60, 2 )
 	panel:CheckBox("#Tool.wire_explosive.removeafter","wire_explosive_removeafter")
