@@ -172,6 +172,7 @@ local illegal_classes = {
 	[ "rpg_missile" ] = true,
 	[ "npc_satchel" ] = true,
 	[ "prop_combine_ball" ] = true,
+	[ "crossbow_bolt" ] = true,
 }
 
 function PropCore.PhysManipulate(this, pos, rot, freeze, gravity, notsolid)
