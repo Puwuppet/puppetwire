@@ -176,7 +176,7 @@ local illegal_classes = {
 }
 
 function PropCore.PhysManipulate(this, pos, rot, freeze, gravity, notsolid)
-	if illegal_classes[ this:GetClass() ] then return self:throw( "You cannot manipulate this entity class" ) end
+	if illegal_classes[ this:GetClass() ] then return end
 
 	local phys = this:GetPhysicsObject()
 	local physOrThis = IsValid(phys) and phys or this
