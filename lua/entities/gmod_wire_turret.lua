@@ -100,14 +100,7 @@ local ValidTracers = {
 	["Tracer"]                = true,
 	["AR2Tracer"]             = true,
 	["ToolTracer"]            = true,
-	["GaussTracer"]           = true,
 	["LaserTracer"]           = true,
-	["StriderTracer"]         = true,
-	["GunshipTracer"]         = true,
-	["HelicopterTracer"]      = true,
-	["AirboatGunTracer"]      = true,
-	["AirboatGunHeavyTracer"] = true,
-	[""]                      = true
 }
 
 function ENT:SetSound( sound )
@@ -117,24 +110,21 @@ function ENT:SetSound( sound )
 end
 
 function ENT:SetDelay( delay )
-	local check = game.SinglePlayer() -- clamp delay if it's not single player
-	local limit = check and 0.01 or 0.05
+	local limit = 0.05
 	self.delay = math.Clamp( delay, limit, 1 )
 end
 
 function ENT:SetNumBullets( numbullets )
-	local check = game.SinglePlayer() -- clamp num bullets if it's not single player
-	local limit = math.floor( math.max( 1, numbullets ) )
-	self.numbullets = check and limit or math.Clamp( limit, 1, 10 )
+	self.numbullets = math.Clamp( numbullets, 1, 10 )
 end
 
 function ENT:SetTracer( tracer )
 	local tracer = string.Trim(tracer)
-	self.tracer = ValidTracers[tracer] and tracer or ""
+	self.tracer = ValidTracers[tracer] and tracer or "Tracer"
 end
 
 function ENT:SetSpread( spread )
-	self.spread = math.Clamp( spread, 0, 1 )
+	self.spread = math.Clamp( spread, 0.01, 1 )
 	self.spreadvector.x = self.spread
 	self.spreadvector.y = self.spread
 end
