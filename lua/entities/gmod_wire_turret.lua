@@ -63,11 +63,14 @@ function ENT:FireShot()
 	bullet.Tracer     = self.tracernum
 	bullet.TracerName = self.tracer
 	bullet.Force      = self.force
-	bullet.Damage     = self.damage
 	bullet.Attacker   = self:GetPlayer()
 	bullet.Callback   = function(attacker, traceres, cdamageinfo)
 		WireLib.TriggerOutput(self, "HitEntity", traceres.Entity)
 	end
+
+	local dps = 100 / ( ( self.damage / self.delay ) * self.numbullets )
+	if 1 > dps then dps = 1 end
+	bullet.Damage = self.damage * dps
 
 	self:FireBullets( bullet )
 
