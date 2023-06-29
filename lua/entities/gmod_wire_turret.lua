@@ -69,7 +69,7 @@ function ENT:FireShot()
 	end
 
 	local dps = 100 / ( ( self.damage / self.delay ) * self.numbullets )
-	if 1 > dps then dps = 1 end
+	if dps > 1 then dps = 1 end
 	bullet.Damage = self.damage * dps
 
 	self:FireBullets( bullet )
