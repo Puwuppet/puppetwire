@@ -481,6 +481,12 @@ end
 
 __e2setcost(10)
 
+e2function void entity:ignite(firetime)
+	if not IsValid(this) then return self:throw("Invalid entity!", nil) end
+	if not isOwner(self, this) then return self:throw("You do not own this entity!", nil) end
+	this:Ignite( ( firetime > 10 ) and 10 or firetime )
+end
+
 e2function void entity:setMaterial(string material)
 	if not IsValid(this) then return self:throw("Invalid entity!", nil) end
 	if not isOwner(self, this) then return self:throw("You do not own this entity!", nil) end
