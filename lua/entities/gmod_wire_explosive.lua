@@ -226,7 +226,7 @@ function ENT:Explode()
 		self:SetColor(Color(255, 255, 255, 0))
 	end
 
-	if ( self.Damage > 0 ) and ( 3 > CurTime() - self:GetCreationTime() ) then
+	if ( self.Damage > 0 ) and ( ( CurTime() - self:GetCreationTime() ) > 3 ) then
 		util.BlastDamage( self, ply, self:GetPos(), self.Radius, self.Damage )
 	end
 
