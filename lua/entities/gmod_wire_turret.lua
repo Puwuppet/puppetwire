@@ -5,6 +5,10 @@ ENT.WireDebugName = "Turret"
 
 if ( CLIENT ) then return end -- No more client
 
+local NumEnabled = CreateConVar("wire_turret_numbullets_enabled", 1, {FCVAR_NOTIFY, FCVAR_ARCHIVE}, "Enable or Disable the numbullets function of wire turrets")
+local TracerEnabled = CreateConVar("wire_turret_tracer_enabled", 1, {FCVAR_NOTIFY, FCVAR_ARCHIVE}, "Enable or disable the tracer per x bullet function of wire turrets")
+local MinTurretDelay = CreateConVar("wire_turret_delay_minimum", 0.01, {FCVAR_NOTIFY, FCVAR_ARCHIVE}, "Set the minimum allowed value for wire turrets")
+
 function ENT:Initialize()
 	self:PhysicsInit( SOLID_VPHYSICS )
 	self:SetMoveType( MOVETYPE_VPHYSICS )
@@ -110,17 +114,16 @@ function ENT:SetSound( sound )
 end
 
 function ENT:SetDelay( delay )
-	local limit = 0.05
-	self.delay = math.Clamp( delay, limit, 1 )
+	self.delay = math.Clamp( delay, MinTurretDelay:GetFloat(), 2 )
 end
 
 function ENT:SetNumBullets( numbullets )
-	self.numbullets = math.Clamp( numbullets, 1, 10 )
+	self.numbullets = NumEnabled:GetBool() and math.Clamp( math.floor( numbullets ), 1, 10 ) or 1
 end
 
 function ENT:SetTracer( tracer )
-	local tracer = string.Trim(tracer)
-	self.tracer = ValidTracers[tracer] and tracer or "Tracer"
+	tracer = string.Trim(tracer)
+	self.tracer = TracerEnabled:GetBool() and ValidTracers[tracer] and tracer or ""
 end
 
 function ENT:SetSpread( spread )
@@ -138,7 +141,7 @@ function ENT:SetForce( force )
 end
 
 function ENT:SetTraceNum( tracernum )
-	self.tracernum = math.floor( math.max( tracernum or 1 ) )
+	self.tracernum = TracerEnabled:GetBool() and math.Clamp( math.floor( tracernum ), 0, 15 ) or 0
 end
 
 function ENT:TriggerInput( iname, value )
