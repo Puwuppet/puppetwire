@@ -91,6 +91,6 @@ function TOOL.BuildCPanel( CPanel )
 	CPanel:NumSlider("#Tool_wire_turret_spread", "wire_turret_spread", 0.01, 1.0, 2)
 	CPanel:NumSlider("#Tool_wire_turret_force", "wire_turret_force", 0, 500, 1)
 	CPanel:NumSlider("#Tool_wire_turret_tracernum", "wire_turret_tracernum", 0, 15, 0)
-	CPanel:NumSlider("#Delay", "wire_turret_delay", 0.05, 1.0, 2)
+	CPanel:NumSlider("#Delay", "wire_turret_delay", 0.05, 1.0, 1)
 
 end

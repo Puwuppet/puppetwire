@@ -114,16 +114,16 @@ function ENT:SetSound( sound )
 end
 
 function ENT:SetDelay( delay )
-	self.delay = math.Clamp( delay, MinTurretDelay:GetFloat(), 2 )
+	self.delay = math.Clamp( delay, 0.05, 1 )
 end
 
 function ENT:SetNumBullets( numbullets )
-	self.numbullets = NumEnabled:GetBool() and math.Clamp( math.floor( numbullets ), 1, 10 ) or 1
+	self.numbullets = math.Clamp( math.floor( numbullets ), 1, 10 )
 end
 
 function ENT:SetTracer( tracer )
 	tracer = string.Trim(tracer)
-	self.tracer = TracerEnabled:GetBool() and ValidTracers[tracer] and tracer or ""
+	self.tracer = TracerEnabled:GetBool() and ValidTracers[tracer] and tracer or "Tracer"
 end
 
 function ENT:SetSpread( spread )
