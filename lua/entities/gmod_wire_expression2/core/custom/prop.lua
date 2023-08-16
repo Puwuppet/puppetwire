@@ -178,6 +178,7 @@ local illegal_classes = {
 	[ "npc_satchel" ] = true,
 	[ "prop_combine_ball" ] = true,
 	[ "crossbow_bolt" ] = true,
+	[ "grenade_ar2" ] = true
 }
 
 function PropCore.PhysManipulate(this, pos, rot, freeze, gravity, notsolid)
@@ -510,6 +511,7 @@ end
 e2function void bone:boneManipulate(vector pos, angle rot, isFrozen, gravity, collision)
 	local ent, index = boneVerify(self, this)
 	if not ValidAction(self, ent, "manipulate", index) then return end
+	if ent:IsValid() and illegal_classes[ ent:GetClass() ] then return end
 	
 	setPos(this, pos)
 	setAng(this, rot)
@@ -560,6 +562,8 @@ end
 e2function void bone:setVelocity(vector velocity)
 	local ent, index = boneVerify(self, this)
 	if not ValidAction(self, ent, "velocitynxt", index) then return end
+	if ent:IsValid() and illegal_classes[ ent:GetClass() ] then return end
+
 	this:SetVelocity(velocity)
 	ent:PhysWake()
 end
@@ -567,6 +571,8 @@ end
 e2function void bone:setVelocityInstant(vector velocity)
 	local ent, index = boneVerify(self, this)
 	if not ValidAction(self, ent, "velocityins", index) then return end
+	if ent:IsValid() and illegal_classes[ ent:GetClass() ] then return end
+
 	this:SetVelocityInstantaneous(velocity)
 	ent:PhysWake()
 end
@@ -574,6 +580,8 @@ end
 e2function void bone:setAngVelocity(vector velocity)
 	local ent, index = boneVerify(self, this)
 	if not ValidAction(self, ent, "angvelnxt", index) then return end
+	if ent:IsValid() and illegal_classes[ ent:GetClass() ] then return end
+
 	this:SetAngleVelocity(velocity)
 	ent:PhysWake()
 end
@@ -581,6 +589,8 @@ end
 e2function void bone:setAngVelocityInstant(vector velocity)
 	local ent, index = boneVerify(self, this)
 	if not ValidAction(self, this, "angvelinst", index) then return end
+	if ent:IsValid() and illegal_classes[ ent:GetClass() ] then return end
+
 	this:SetAngleVelocityInstantaneous(velocity)
 	ent:PhysWake()
 end
@@ -652,6 +662,8 @@ e2function void entity:rerotate(angle rot) = e2function void entity:setAng(angle
 e2function void bone:setPos(vector pos)
 	local ent, index = boneVerify(self, this)
 	if not ValidAction(self, ent, "pos", index) then return end
+	if ent:IsValid() and illegal_classes[ ent:GetClass() ] then return end
+
 	setPos(this, pos)
 	ent:PhysWake()
 end
@@ -659,6 +671,8 @@ end
 e2function void bone:setAng(angle rot)
 	local ent, index = boneVerify(self, this)
 	if not ValidAction(self, ent, "ang", index) then return end
+	if ent:IsValid() and illegal_classes[ ent:GetClass() ] then return end
+
 	setAng(this, rot)
 	ent:PhysWake()
 end
@@ -800,6 +814,7 @@ e2function void entity:parentTo(entity target)
 	if not parent_antispam( this ) then return self:throw("You are parenting too fast!", nil) end
 	if this == target then return self:throw("You cannot parent a prop to itself") end
 	if not parent_check( self, this, target ) then return self:throw("Parenting chain of entities can't exceed 16 or crash may occur", nil) end
+	if this:IsValid() and illegal_classes[ ent:GetClass() ] then return end
 
 	this:SetParent(target)
 end
