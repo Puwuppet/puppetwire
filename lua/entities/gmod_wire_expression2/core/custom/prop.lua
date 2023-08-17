@@ -814,7 +814,7 @@ e2function void entity:parentTo(entity target)
 	if not parent_antispam( this ) then return self:throw("You are parenting too fast!", nil) end
 	if this == target then return self:throw("You cannot parent a prop to itself") end
 	if not parent_check( self, this, target ) then return self:throw("Parenting chain of entities can't exceed 16 or crash may occur", nil) end
-	if this:IsValid() and illegal_classes[ ent:GetClass() ] then return end
+	if this:IsValid() and illegal_classes[ this:GetClass() ] then return end
 
 	this:SetParent(target)
 end
