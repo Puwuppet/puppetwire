@@ -64,7 +64,7 @@ function ENT:Explode()
 	local ply = self:GetPlayer()
 	if not IsValid(ply) then ply = self end
 
-	if ( self.Damage > 0 ) and ( ( CurTime() - self:GetCreationTime() ) > 3 ) then
+	if ( ( self.Damage or 0 ) > 0 ) and ( ( CurTime() - self:GetCreationTime() ) > 3 ) then
 		util.BlastDamage( self, ply, self:GetPos(), self.radius, self.damage )
 	end
 
@@ -75,10 +75,7 @@ function ENT:Explode()
 	self.Exploded = true
 	self:ShowOutput()
 
-	if ( self.removeafter ) then
-		self:Remove()
-		return
-	end
+	self:Remove()
 end
 
 function ENT:ShowOutput()

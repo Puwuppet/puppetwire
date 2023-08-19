@@ -226,7 +226,7 @@ function ENT:Explode()
 		self:SetColor(Color(255, 255, 255, 0))
 	end
 
-	if ( self.Damage > 0 ) and ( ( CurTime() - self:GetCreationTime() ) > 3 ) then
+	if ( ( self.Damage or 0 ) > 0 ) and ( ( CurTime() - self:GetCreationTime() ) > 3 ) then
 		util.BlastDamage( self, ply, self:GetPos(), self.Radius, self.Damage )
 	end
 
@@ -234,18 +234,8 @@ function ENT:Explode()
 	 effectdata:SetOrigin( self:GetPos() )
 	util.Effect( "Explosion", effectdata, true, true )
 
-	if ( self.Removeafter ) then
-		self:Remove()
-		return
-	end
 
-	self.exploding = false
-
-	self.reloading = true
-	self.ReloadTime = CurTime() + math.max(wire_explosive_delay:GetFloat(), self.Delayreloadtime)
-	-- Force reset of counter
-	self.CountTime = 0
-	self:ShowOutput()
+	self:Remove()
 end
 
 -- don't foreget to call this when changes happen
