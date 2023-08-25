@@ -142,7 +142,7 @@ function PropCore.CreateProp(self, model, pos, angles, freeze, vehicleType)
 	prop:Activate()
 
 	local phys = prop:GetPhysicsObject()
-	if IsValid( phys ) then
+	if phys:IsValid() then
 		if angles ~= nil then setAng( phys, angles ) end
 		phys:Wake()
 		if freeze > 0 then phys:EnableMotion( false ) end
@@ -190,7 +190,7 @@ function PropCore.PhysManipulate(this, pos, rot, freeze, gravity, notsolid)
 	if pos ~= nil then setPos( physOrThis, pos ) end
 	if rot ~= nil then setAng( physOrThis, rot ) end
 
-	if IsValid( phys ) then
+	if phys:IsValid() then
 		if freeze ~= nil and this:GetUnFreezable() ~= true then phys:EnableMotion( freeze == 0 ) end
 		if gravity ~= nil then phys:EnableGravity( gravity ~= 0 ) end
 		if ( not this:IsVehicle() ) and ( notsolid ~= nil ) then this:SetSolid( notsolid ~= 0 and SOLID_NONE or SOLID_VPHYSICS ) end
@@ -383,7 +383,7 @@ e2function void entity:propGravity(number gravity)
 	if physCount > 1 then
 		for physID = 0, physCount - 1 do
 			local phys = this:GetPhysicsObjectNum(physID)
-			if IsValid(phys) then phys:EnableGravity( gravity ~= 0 ) end
+			if phys:IsValid() then phys:EnableGravity( gravity ~= 0 ) end
 		end
 	else
 		PhysManipulate(this, nil, nil, nil, gravity, nil)
@@ -393,7 +393,7 @@ end
 e2function void entity:propDrag( number drag )
 	if not PropCore.ValidAction(self, this, "drag") then return end
 	local phys = this:GetPhysicsObject()
-	if IsValid( phys ) then
+	if phys:IsValid() then
 		phys:EnableDrag( drag ~= 0 )
 	end
 end
@@ -402,16 +402,19 @@ e2function void entity:propInertia( vector inertia )
 	if not PropCore.ValidAction(self, this, "inertia") then return end
 	if inertia:IsZero() then return end
 	local phys = this:GetPhysicsObject()
-	if IsValid( phys ) then
-		phys:SetInertia(inertia)
+	if phys:IsValid() then
+		local x, y, z = inertia[ 1 ], inertia[ 2 ], inertia[ 3 ]
+		if x ~= x or y ~= y or z ~= z then self:throw( "Invalid inertia", nil ) return end
+		phys:SetInertia( Vector( math.Clamp( x, 1, 100000 ), math.Clamp( y, 1, 100000 ), math.Clamp( z, 1, 100000 ) ) )
 	end
 end
 
 e2function void entity:propSetBuoyancy(number buoyancy)
 	if not ValidAction(self, this, "buoyancy") then return end
 	local phys = this:GetPhysicsObject()
-	if IsValid( phys ) then
-		phys:SetBuoyancyRatio( math.Clamp(buoyancy, 0, 1) )
+	if phys:IsValid() then
+		if buoyancy ~= buoyancy then return end
+		phys:SetBuoyancyRatio( math.Clamp( buoyancy, 0, 1 ) )
 	end
 end
 
@@ -450,14 +453,14 @@ end
 e2function string entity:propPhysicalMaterial()
 	if not ValidAction(self, this, "physprop") then return "" end
 	local phys = this:GetPhysicsObject()
-	if IsValid(phys) then return phys:GetMaterial() or "" end
+	if phys:IsValid() then return phys:GetMaterial() or "" end
 	return ""
 end
 
 e2function void entity:propSetVelocity(vector velocity)
 	if not ValidAction(self, this, "velocitynxt") then return end
 	local phys = this:GetPhysicsObject()
-	if IsValid( phys ) then
+	if phys:IsValid() then
 		phys:SetVelocity(velocity)
 	end
 end
@@ -465,7 +468,7 @@ end
 e2function void entity:propSetVelocityInstant(vector velocity)
 	if not ValidAction(self, this, "velocityins") then return end
 	local phys = this:GetPhysicsObject()
-	if IsValid( phys ) then
+	if phys:IsValid() then
 		phys:SetVelocityInstantaneous(velocity)
 	end
 end
@@ -473,7 +476,7 @@ end
 e2function void entity:propSetAngVelocity(vector velocity)
 	if not ValidAction(self, this, "angvel") then return end
 	local phys = this:GetPhysicsObject()
-	if IsValid( phys ) then
+	if phys:IsValid() then
 		phys:SetAngleVelocity(velocity)
 	end
 end
@@ -481,7 +484,7 @@ end
 e2function void entity:propSetAngVelocityInstant(vector velocity)
 	if not ValidAction(self, this, "angvelinst") then return end
 	local phys = this:GetPhysicsObject()
-	if IsValid( phys ) then
+	if phys:IsValid() then
 		phys:SetAngleVelocityInstantaneous(velocity)
 	end
 end
