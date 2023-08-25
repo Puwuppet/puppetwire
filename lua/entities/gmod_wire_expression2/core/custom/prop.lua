@@ -308,7 +308,7 @@ __e2setcost(30)
 local function removeAllIn( self, tbl )
 	local count = 0
 	for k,v in pairs( tbl ) do
-		if (IsValid(v) and isOwner(self,v) and !v:IsPlayer()) then
+		if (IsValid(v) and isOwner(self,v) and !v:IsPlayer() and !v:IsWeapon()) then
 			count = count + 1
 			v:Remove()
 		end
@@ -339,7 +339,7 @@ end
 
 e2function void propDeleteAll()
 	for ent in pairs( self.data.spawnedProps ) do
-		if IsValid( ent ) then
+		if IsValid( ent ) and not ent:IsWeapon() then
 			ent:Remove()
 		end
 	end
