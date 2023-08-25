@@ -281,6 +281,7 @@ end
 __e2setcost(10)
 e2function void entity:propDelete()
 	if not ValidAction(self, this, "delete") then return end
+	if this:IsWeapon() then return end
 	this:Remove()
 end
 
