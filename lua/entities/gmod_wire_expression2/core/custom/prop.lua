@@ -654,6 +654,7 @@ end
 
 e2function void entity:setLocalPos(vector pos)
 	if not ValidAction(self, this, "pos") then return end
+	if this:IsValid() and illegal_classes[ this:GetClass() ] then return end
 	WireLib.setLocalPos(this, pos)
 end
 
@@ -667,6 +668,7 @@ end
 
 e2function void entity:setLocalAng(angle rot)
 	if not ValidAction(self, this, "ang") then return end
+	if this:IsValid() and illegal_classes[ this:GetClass() ] then return end
 	WireLib.setLocalAng(this, rot)
 end
 
