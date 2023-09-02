@@ -131,6 +131,22 @@ function ENT:TriggerInput(iname, value)
 	self:UpdateSound()
 end
 
+local isnumber = isnumber
+local isstring = isstring
+local math_random = math.random
+local sound_GetProperties = sound.GetProperties
+local function SanitizeSound( soundpath )
+    local soundscript = sound_GetProperties( soundpath )
+    if soundscript then
+        local rawsound = soundscript.sound or "common/null.wav"
+        if not isstring( rawsound ) then rawsound = rawsound[ math_random( 1, #rawsound ) ] end
+
+        return rawsound
+    else
+        return soundpath
+    end
+end
+
 function ENT:UpdateSound()
 	if self.NeedsRefresh or self.sound ~= self.ActiveSample then
 		self.NeedsRefresh = nil
@@ -160,7 +176,7 @@ function ENT:SetSound(soundName)
 	self:StopSounds()
 
 	if soundName:match('["?]') then return end
-	parsedsound = soundName:Trim()
+	parsedsound = SanitizeSound( soundName:Trim() )
 	util.PrecacheSound(parsedsound)
 
 	self.sound = parsedsound
