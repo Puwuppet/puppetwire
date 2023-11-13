@@ -79,11 +79,7 @@ E2Lib.isValidBone = isValidBone
 registerType("bone", "b", nil,
 	nil,
 	nil,
-	function(retval)
-		if retval == nil then return end
-		if type(retval) ~= "PhysObj" then error("Return value is neither nil nor a PhysObj, but a "..type(retval).."!",0) end
-		if not bone2entity[retval] then error("Return value is not a registered bone!",0) end
-	end,
+	nil,
 	function(b)
 		return not isValidBone(b)
 	end
@@ -112,7 +108,7 @@ end
 --- Returns an array containing all of <this>'s bones. This array's first element has the index 0!
 e2function array entity:bones()
 	if not IsValid(this) then return { } end
-	return GetBones(this)
+	return table.Copy(GetBones(this))
 end
 
 --- Returns <this>'s number of bones.
@@ -422,7 +418,3 @@ e2function string toString(bone b)
 end
 
 WireLib.registerDebuggerFormat("BONE", e2_tostring_bone)
-
---[[************************************************************************]]--
-
--- TODO: constraints
