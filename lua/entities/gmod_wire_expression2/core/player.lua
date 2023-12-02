@@ -17,6 +17,26 @@ registerCallback("e2lib_replace_function", function(funcname, func, oldfunc)
 	end
 end)
 
+local M_CUserCmd = FindMetaTable("CUserCmd")
+local M_CMoveData = FindMetaTable("CMoveData")
+
+registerType("usercmd", "xuc", nil,
+	nil, nil,
+	nil,
+	function(v)
+		return not istable(v) or getmetatable(v) ~= M_CUserCmd
+	end
+)
+
+registerType("movedata", "xmv", nil,
+	nil,
+	nil,
+	nil,
+	function(v)
+		return not istable(v) or getmetatable(v) ~= M_CMoveData
+	end
+)
+
 --------------------------------------------------------------------------------
 
 __e2setcost(5) -- temporary
@@ -900,7 +920,7 @@ end
 
 [deprecated = "Use the playerSpawn event instead"]
 e2function void runOnSpawn(number activate) -- If 1, make the chip run on a player respawning. Not joining.
-	RespawnAlert[self.entity] = active~=0 and true or nil
+	RespawnAlert[self.entity] = activate~=0 and true or nil
 end
 
 [nodiscard, deprecated = "Use the playerSpawn event instead"]
@@ -956,6 +976,61 @@ E2Lib.registerEvent("playerChangedTeam", {
 	{ "Player", "e" },
 	{ "OldTeam", "n" },
 	{ "NewTeam", "n" }
+})
+
+--[[--------------------------------------------------------------------------------------------]]--
+
+__e2setcost(1)
+
+
+e2function number usercmd:getMouseDeltaX()
+	return this:GetMouseX()
+end
+
+e2function number usercmd:getMouseDeltaY()
+	return this:GetMouseY()
+end
+
+e2function number usercmd:getForwardMove()
+	return this:GetForwardMove()
+end
+
+e2function number usercmd:getSideMove()
+	return this:GetSideMove()
+end
+
+e2function number usercmd:getUpMove()
+	return this:GetUpMove()
+end
+
+e2function number movedata:getForwardSpeed()
+	return this:GetForwardSpeed()
+end
+
+e2function number movedata:getSideSpeed()
+	return this:GetSideSpeed()
+end
+
+e2function number movedata:getUpSpeed()
+	return this:GetUpSpeed()
+end
+
+e2function number movedata:getMaxSpeed()
+	return this:GetMaxSpeed()
+end
+
+e2function angle movedata:getMoveAngles()
+	return this:GetMoveAngles()
+end
+
+hook.Add("SetupMove", "E2_PlayerMove", function(ply, mv, cmd)
+	E2Lib.triggerEvent("playerMove", { ply, mv, cmd })
+end)
+
+E2Lib.registerEvent("playerMove", {
+	{ "Player", "e" },
+	{ "MoveData", "xmv" },
+	{ "Command", "xuc" }
 })
 
 --******************************************--

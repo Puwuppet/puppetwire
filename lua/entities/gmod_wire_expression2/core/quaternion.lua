@@ -22,10 +22,7 @@ local rad2deg = 180/math.pi
 registerType("quaternion", "q", { 0, 0, 0, 0 },
 	nil,
 	nil,
-	function(retval)
-		if !istable(retval) then error("Return value is not a table, but a "..type(retval).."!",0) end
-		if #retval ~= 4 then error("Return value does not have exactly 4 entries!",0) end
-	end,
+	nil,
 	function(v)
 		return !istable(v) or #v ~= 4
 	end
@@ -440,7 +437,7 @@ end)
 
 registerOperator("indexset", "qnn", "", function(state, this, index, value)
 	this[math.Round(math.Clamp(index, 1, 4))] = value
-	self.GlobalScope.vclk[this] = true
+	state.GlobalScope.vclk[this] = true
 end)
 
 __e2setcost(6)

@@ -200,7 +200,11 @@ local function handleIO(name)
 
 		for i, key in ipairs(retval[1]) do
 			if ports[3][key] then
-				self:Error("Directive (@" .. name .. ") contains multiple definitions of the same variable", columns[i])
+				if ports[3][key] ~= retval[2][i] then
+					self:Error("Directive (@" .. name .. ") contains multiple definitions of the same variable with differing types", columns[i])
+				else
+					self:Warning("Directive (@" .. name .. ") contains multiple definitions of the same variable", columns[i])
+				end
 			else
 				local index = #ports[1] + 1
 				ports[1][index] = key -- Index: Name
@@ -487,7 +491,7 @@ end
 
 function PreProcessor:GetFunction(args, type)
 	local thistype, colon, name, argtypes = args:match("([^:]-)(:?)([^:(]+)%(([^)]*)%)")
-	if not thistype or (thistype ~= "") ~= (colon ~= "") then self:Error("Malformed " .. type .. " argument " .. args) end
+	if not thistype or (thistype ~= "") ~= (colon ~= "") then self:Error("Malformed " .. type .. " argument " .. args) return end
 
 	thistype = self:GetType(thistype)
 

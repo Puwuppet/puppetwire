@@ -166,8 +166,10 @@ function ENT:Execute()
 	end
 
 	self.GlobalScope.vclk = {}
-	for k, var in pairs(self.globvars_mut) do
-		self.GlobalScope[k] = fixDefault(wire_expression_types2[var.type][2])
+	if not self.directives.strict then
+		for k, var in pairs(self.globvars_mut) do
+			self.GlobalScope[k] = fixDefault(wire_expression_types2[var.type][2])
+		end
 	end
 
 	if self.context.prfcount + self.context.prf - e2_softquota > e2_hardquota then
@@ -229,8 +231,10 @@ function ENT:ExecuteEvent(evt, args)
 	self:TriggerOutputs()
 
 	self.GlobalScope.vclk = {}
-	for k, var in pairs(self.globvars_mut) do
-		self.GlobalScope[k] = fixDefault(wire_expression_types2[var.type][2])
+	if not self.directives.strict then
+		for k, var in pairs(self.globvars_mut) do
+			self.GlobalScope[k] = fixDefault(wire_expression_types2[var.type][2])
+		end
 	end
 
 	if self.context.prfcount + self.context.prf - e2_softquota > e2_hardquota then
@@ -311,7 +315,8 @@ function ENT:CompileCode(buffer, files, filepath)
 	if cancompile == false then self:Error( reason or "E2 Compile Blocked" ) return end
 	
 	local status, directives, buffer = E2Lib.PreProcessor.Execute(buffer,nil,self)
-	if not status then self:Error(directives) return end
+	if not status then return self:Error(directives[1].message) end
+
 	self.buffer = buffer
 	self.error = false
 
@@ -331,15 +336,15 @@ function ENT:CompileCode(buffer, files, filepath)
 	self.trigger = directives.trigger
 
 	local status, tokens = E2Lib.Tokenizer.Execute(self.buffer)
-	if not status then self:Error(tokens) return end
+	if not status then self:Error(tokens[1].message) return end
 
 	local status, tree, dvars = E2Lib.Parser.Execute(tokens)
-	if not status then self:Error(tree) return end
+	if not status then self:Error(tree.message) return end
 
 	if not self:PrepareIncludes(files) then return end
 
 	local status, script, inst = E2Lib.Compiler.Execute(tree, directives, dvars, self.includes)
-	if not status then self:Error(script) return end
+	if not status then self:Error(script.message) return end
 
 	self.script = script
 	self.registered_events = inst.registered_events
@@ -384,7 +389,7 @@ function ENT:PrepareIncludes(files)
 			return
 		end
 
-		self.includes[file] = { tree }
+		self.includes[file] = { tree, nil, dvars }
 	end
 
 	return true
@@ -459,8 +464,10 @@ function ENT:ResetContext()
 		self.globvars_mut[k] = nil
 	end
 
-	for k, var in pairs(self.globvars_mut) do
-		self.GlobalScope[k] = fixDefault(wire_expression_types2[var.type][2])
+	if not self.directives.strict then -- Need to disable this so local variables at top scope don't get reset
+		for k, var in pairs(self.globvars_mut) do
+			self.GlobalScope[k] = fixDefault(wire_expression_types2[var.type][2])
+		end
 	end
 
 	for k, v in pairs(self.Inputs) do

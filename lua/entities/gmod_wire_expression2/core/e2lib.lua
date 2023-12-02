@@ -15,7 +15,7 @@ AddCSLuaFile()
 
 ---@class EnvOperator
 ---@field args TypeSignature[]
----@field returns TypeSignature[]
+---@field ret TypeSignature?
 ---@field op RuntimeOperator
 ---@field cost integer
 
@@ -68,6 +68,57 @@ end
 -- Returns a default e2 table instance.
 function E2Lib.newE2Table()
 	return { n = {}, ntypes = {}, s = {}, stypes = {}, size = 0 }
+end
+
+---@class E2Lambda
+---@field fn fun(args: any[]): any
+---@field arg_sig string
+---@field ret string
+local Function = {}
+Function.__index = Function
+
+function Function:__tostring()
+	return "function(" .. self.arg_sig .. ")" .. ((self.ret and (": " .. self.ret)) or "")
+end
+
+function Function.new(args, ret, fn)
+	return setmetatable({ arg_sig = args, ret = ret, fn = fn }, Function)
+end
+
+E2Lib.Lambda = Function
+
+--- Call the function without doing any type checking.
+--- Only use this when you check self:Args() yourself to ensure you have the correct signature function.
+function Function:UnsafeCall(args)
+	return self.fn(args)
+end
+
+function Function:Call(args, types)
+	if self.arg_sig == types then
+		return self.fn(args)
+	else
+		error("Incorrect arguments passed to lambda")
+	end
+end
+
+function Function:Args()
+	return self.arg_sig
+end
+
+function Function:Ret()
+	return self.ret
+end
+
+--- If given the correct arguments, returns the inner untyped function you can call.
+--- Otherwise, throws an error to the given E2 Context.
+---@param arg_sig string
+---@param ctx RuntimeContext
+function Function:Unwrap(arg_sig, ctx)
+	if self.arg_sig == arg_sig then
+		return self.fn
+	else
+		ctx:forceThrow("Incorrect function signature passed, expected (" .. arg_sig .. ") got (" .. self.arg_sig .. ")")
+	end
 end
 
 -- Returns a cloned table of the variable given if it is a table.
@@ -252,52 +303,6 @@ function E2Lib.canModifyPlayer(self, ply)
 	return isOwner(self, vehicle)
 end
 
--- ------------------------ type guessing ------------------------------------------
-
-local type_lookup = {
-	number = "n",
-	string = "s",
-	Vector = "v",
-	PhysObj = "b",
-}
-local table_length_lookup = {
-	[2] = "xv2",
-	[3] = "v",
-	[4] = "xv4",
-	[9] = "m",
-	[16] = "xm4",
-}
-
-function E2Lib.guess_type(value)
-	local vtype = type(value)
-	if type_lookup[vtype] then return type_lookup[vtype] end
-	if IsValid(value) then return "e" end
-	if value.EntIndex then return "e" end
-	if vtype == "table" then
-		if table_length_lookup[#value] then return table_length_lookup[#value] end
-		if value.HitPos then return "xrd" end
-	end
-
-	for typeid, v in pairs(wire_expression_types2) do
-		if v[5] then
-			local ok = pcall(v[5], value)
-			if ok then return typeid end
-		end
-	end
-
-	-- TODO: more type guessing here
-
-	return "" -- empty string = unknown type, for now.
-end
-
--- Types that cannot possibly be guessed correctly:
--- angle (will be reported as vector)
--- matrix2 (will be reported as vector4)
--- wirelink (will be reported as entity)
--- complex (will be reported as vector2)
--- quaternion (will be reported as vector4)
--- all kinds of nil stuff
-
 -- ------------------------ list filtering -------------------------------------------------
 
 function E2Lib.filterList(list, criterion)
@@ -420,38 +425,40 @@ local Keyword = {
 	Else = 3,
 	-- ``local``
 	Local = 4,
+	-- ``let``
+	Let = 5,
 	-- ``const``
-	Const = 5,
+	Const = 6,
 	-- ``while``
-	While = 6,
+	While = 7,
 	-- ``for``
-	For = 7,
+	For = 8,
 	-- ``break``
-	Break = 8,
+	Break = 9,
 	-- ``continue``
-	Continue = 9,
+	Continue = 10,
 	-- ``switch``
-	Switch = 10,
+	Switch = 11,
 	-- ``case``
-	Case = 11,
+	Case = 12,
 	-- ``default``
-	Default = 12,
+	Default = 13,
 	-- ``foreach``
-	Foreach = 13,
+	Foreach = 14,
 	-- ``function``
-	Function = 14,
+	Function = 15,
 	-- ``return``
-	Return = 15,
+	Return = 16,
 	-- ``#include``
-	["#Include"] = 16,
+	["#Include"] = 17,
 	-- ``try``
-	Try = 17,
+	Try = 18,
 	-- ``catch``
-	Catch = 18,
+	Catch = 19,
 	-- ``do``
-	Do = 19,
+	Do = 20,
 	-- ``event``
-	Event = 20
+	Event = 21
 }
 
 E2Lib.Keyword = Keyword
