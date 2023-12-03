@@ -199,10 +199,6 @@ function FLIR.toggle()
 	if not FLIR.enabled then FLIR.start() else FLIR.stop() end
 end
 
-concommand.Add("flir_toggle", function()
-	FLIR.toggle()
-end)
-
 function FLIR.enable(enabled)
 	if enabled then FLIR.start() else FLIR.stop() end
 end
