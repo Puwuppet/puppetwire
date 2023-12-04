@@ -513,12 +513,14 @@ end
 
 e2function void entity:setMaterial(string material)
 	if not IsValid(this) then return self:throw("Invalid entity!", nil) end
+	if this:IsPlayer() then return self:throw("You cannot set the material of a player!", nil) end
 	if not isOwner(self, this) then return self:throw("You do not own this entity!", nil) end
 	E2Lib.setMaterial(this, material)
 end
 
 e2function void entity:setSubMaterial(index, string material)
 	if not IsValid(this) then return self:throw("Invalid entity!", nil) end
+	if this:IsPlayer() then return self:throw("You cannot set the submaterial of a player!", nil) end
 	if not isOwner(self, this) then return self:throw("You do not own this entity!", nil) end
 	E2Lib.setSubMaterial(this, index-1, material)
 end
@@ -699,14 +701,14 @@ e2function void entity:ejectPod()
 	if not IsValid(this) or not this:IsVehicle() then return self:throw("Invalid vehicle!", nil) end
 	if not isOwner(self, this) then return self:throw("You do not own this entity!", nil) end
 	local ply = this:GetDriver()
-	if IsValid(ply) then ply:ExitVehicle() end
+	if ply:IsValid() then ply:ExitVehicle() end
 end
 
 e2function void entity:podStripWeapons()
 	if not IsValid(this) or not this:IsVehicle() then return self:throw("Invalid vehicle!", nil) end
 	if not isOwner(self, this) then return self:throw("You do not own this entity!", nil) end
 	local ply = this:GetDriver()
-	if IsValid(ply) and next(ply:GetWeapons()) ~= nil then
+	if ply:IsValid() and next(ply:GetWeapons()) ~= nil then
 		ply:StripWeapons()
 		ply:ChatPrint("Your weapons have been stripped!")
 	end
