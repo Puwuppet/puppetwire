@@ -74,15 +74,15 @@ if CLIENT then
 		surface.DrawText( header, header_font )
 
 		if self:GetFormatTime() then -- format as time, aka duration - override formatnumber and floor settings
-			value = WireLib.nicenumber.nicetime(tonumber(value))
+			value = WireLib.nicenumber.nicetime(tonumber(value) or 0)
 		elseif self:GetFormatNumber() then
 			if self:GetFloor() then
-				value = WireLib.nicenumber.format( math.floor(tonumber(value)), 1 )
+				value = WireLib.nicenumber.format( math.floor(tonumber(value) or 0), 1 )
 			else
 				value = WireLib.nicenumber.formatDecimal(tonumber(value))
 			end
 		elseif self:GetFloor() then
-			value = tostring(math.floor(tonumber(value)))
+			value = tostring(math.floor(tonumber(value) or 0))
 		end
 
 		local align = self:GetLeftAlign() and 0 or 1
