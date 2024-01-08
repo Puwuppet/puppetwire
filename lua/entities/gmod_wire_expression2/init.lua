@@ -311,7 +311,7 @@ function ENT:CompileCode(buffer, files, filepath)
 		self.filepath = filepath
 	end
 
-	local cancompile, reason = hook.Run( "CanCompileE2", self.player, buffer )
+	local cancompile, reason = hook.Run( "CanCompileE2", self, buffer, files, filepath )
 	if cancompile == false then self:Error( reason or "E2 Compile Blocked" ) return end
 	
 	local status, directives, buffer = E2Lib.PreProcessor.Execute(buffer,nil,self)
