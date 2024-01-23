@@ -120,7 +120,7 @@ function ENT:TriggerInput(iname, value)
 	elseif iname == "Volume" then
 		self.Volume = math.Clamp(math.floor(value*100), 0.0, 100.0)
 	elseif iname == "Level" then
-		self.Level = math.Clamp(value, 55.0, 165.0)
+		self.Level = math.Clamp(value, 55.0, 110.0)
 	elseif iname == "PitchRelative" then
 		self.Pitch = math.Clamp(math.floor(value*100), 0, 255)
 	elseif iname == "Sample" then
