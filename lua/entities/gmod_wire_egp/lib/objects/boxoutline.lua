@@ -22,7 +22,7 @@ Obj.Draw = function( self, egp )
 		local x3, y3 = rotate( 0, h / 2 - s / 2, -a )
 		local x4, y4 = rotate( 0, -h / 2 + s / 2, -a )
 
-		if egp.gmod_wire_egp_emitter then -- is emitter
+		if egp and egp.gmod_wire_egp_emitter then -- is emitter
 			if (h - s*2 > 0) then
 				-- Right
 				surface.DrawTexturedRectRotated( x + math.ceil(x1), y + math.Round(y1), h - s*2, s, a - 90 )
