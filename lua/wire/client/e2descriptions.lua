@@ -174,6 +174,8 @@ E2Helper.Descriptions["matchFirst(s:s)"] = "runs string.match(S, S2) and returns
 E2Helper.Descriptions["matchFirst(s:sn)"] = "runs string.match(S, S2, N) and returns the first match or an empty string if the match failed"
 E2Helper.Descriptions["gmatch(s:s)"] = "runs string.gmatch(S, S2) and returns the captures in arrays in a table"
 E2Helper.Descriptions["gmatch(s:sn)"] = "runs string.gmatch(S, S2, N) and returns the captures in arrays in a table"
+E2Helper.Descriptions["compress(s)"] = "Compresses the input string using LZMA compression. See decompress(string)"
+E2Helper.Descriptions["decompress(s)"] = "Decompresses an LZMA-compressed string. See compress(string)"
 
 -- Entity/Player
 E2Helper.Descriptions["entity(n)"] = "Gets the entity associated with the id"
@@ -901,6 +903,9 @@ E2Helper.Descriptions["cpuUsage(e:)"] = "Returns the average time per tick the s
 E2Helper.Descriptions["error(s)"] = "Shuts down the E2 with specified script error message"
 E2Helper.Descriptions["assert(n)"] = "If the argument is 0, shut down the E2 with an error message"
 E2Helper.Descriptions["assert(ns)"] = "If the first argument is 0, shut down the E2 with the given error message string"
+E2Helper.Descriptions["assertSoft(n)"] = "Same as assert(n), but will only shutdown in @strict mode"
+E2Helper.Descriptions["assertSoft(ns)"] = "Same as assert(ns), but will only shutdown in @strict mode"
+E2Helper.Descriptions["isStrict()"] = "Returns 1 if the E2 is in strict mode, 0 otherwise"
 E2Helper.Descriptions["reset()"] = "Reset the expression itself as if it was just spawned, stops execution"
 E2Helper.Descriptions["exit()"] = "Stops the execution of any code after it"
 E2Helper.Descriptions["getCode()"] = "Returns the code of the E2 as a string"
