@@ -1,4 +1,4 @@
-WireToolSetup.setCategory( "Vehicle Control" )
+	WireToolSetup.setCategory( "Vehicle Control" )
 WireToolSetup.open( "eyepod", "Eye Pod", "gmod_wire_eyepod", nil, "Eye Pods" )
 
 if ( CLIENT ) then
@@ -53,7 +53,6 @@ if SERVER then
 				ClampY = 0
 			end
 		else
-			WireLib.AddNotify(ply, "Invalid Clamping of Wire EyePod Values!", NOTIFY_ERROR, 5, NOTIFYSOUND_DRIP1)
 			return 1, 0, 0, 0, 0, 0, 0, 0
 		end
 		return DefaultToZero, ShowRateOfChange, ClampXMin, ClampXMax, ClampYMin, ClampYMax, ClampX, ClampY
