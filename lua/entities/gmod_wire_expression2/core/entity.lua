@@ -1085,6 +1085,7 @@ end
 e2function void entity:noCollideAll(number state)
 	if not IsValid(this) then return self:throw("Invalid entity!", nil) end
 	if not isOwner(self, this) then return self:throw("You do not own this prop!", nil) end
+	if this:IsPlayer() then return self:throw("You cannot nocollide a player!", nil) end
 
 	this:SetCollisionGroup(state == 0 and COLLISION_GROUP_NONE or COLLISION_GROUP_WORLD)
 end
