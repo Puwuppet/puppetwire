@@ -184,17 +184,11 @@ function ENT:SetSound(soundName)
 	soundName = WireLib.SoundExists(soundName)
 	if not soundName then return end
 
+	soundName = SanitizeSound( soundName )
 	self.sound = soundName
 
-	self.SoundProperties = sound.GetProperties(soundName)
-	if self.SoundProperties then
-		WireLib.TriggerOutput(self, "Duration", SoundDuration(soundName))
-		WireLib.TriggerOutput(self, "Property Sound", 1)
-		WireLib.TriggerOutput(self, "Properties", self.SoundProperties)
-	else
-		WireLib.TriggerOutput(self, "Property Sound", 0)
-		WireLib.TriggerOutput(self, "Properties", {})
-	end
+	WireLib.TriggerOutput(self, "Property Sound", 0)
+	WireLib.TriggerOutput(self, "Properties", {})
 
 	self:SetOverlayText(soundName)
 end
