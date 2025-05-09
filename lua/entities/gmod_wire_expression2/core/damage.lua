@@ -112,7 +112,7 @@ e2function void entity:takeDamage(number amount, entity attacker, entity inflict
 	if not Enabled:GetBool() then return self:throw("Dealing damage is disabled via wire_expression2_damage_enabled") end
 	if not IsValid(this) then return self:throw("Invalid entity!", nil) end
 	if not IsValid(attacker) then return self:throw("Invalid attacker entity!", nil) end
-	if not E2Lib.isOwner(attacker) then return self:throw("You do not own the attacker entity!", nil) end
+	--if not E2Lib.isOwner(attacker) then return self:throw("You do not own the attacker entity!", nil) end
 	--if not IsValid(inflictor) then return self:throw("Invalid inflictor entity!", nil) end
 	--if not E2Lib.isOwner(inflictor) then return self:throw("You do not own the inflictor entity!", nil) end
 	if not self.player:IsAdmin() then return self:throw("You cannot damage this entity!", nil) end
@@ -124,8 +124,8 @@ e2function void entity:takeDamage(number amount, entity attacker, number damaget
 	if not Enabled:GetBool() then return self:throw("Dealing damage is disabled via wire_expression2_damage_enabled") end
 	if not IsValid(this) then return self:throw("Invalid entity!", nil) end
 	if not IsValid(attacker) then return self:throw("Invalid attacker entity!", nil) end
-	if not E2Lib.isOwner(attacker) then return self:throw("You do not own the attacker entity!", nil) end
-	if not WireLib.CanDamage(self.player, this) then return self:throw("You cannot damage this entity!", nil) end
+	--if not E2Lib.isOwner(attacker) then return self:throw("You do not own the attacker entity!", nil) end
+	--if not WireLib.CanDamage(self.player, this) then return self:throw("You cannot damage this entity!", nil) end
 	if not self.player:IsAdmin() then return self:throw("You cannot damage this entity!", nil) end
 
 	local dmg = DamageInfo()
@@ -141,8 +141,8 @@ e2function void entity:takeDamage(number amount, entity attacker, number damaget
 	if not Enabled:GetBool() then return self:throw("Dealing damage is disabled via wire_expression2_damage_enabled") end
 	if not IsValid(this) then return self:throw("Invalid entity!", nil) end
 	if not IsValid(attacker) then return self:throw("Invalid attacker entity!", nil) end
-	if not E2Lib.isOwner(attacker) then return self:throw("You do not own the attacker entity!", nil) end
-	if not WireLib.CanDamage(self.player, this) then return self:throw("You cannot damage this entity!", nil) end
+	--if not E2Lib.isOwner(attacker) then return self:throw("You do not own the attacker entity!", nil) end
+	--if not WireLib.CanDamage(self.player, this) then return self:throw("You cannot damage this entity!", nil) end
 	if not self.player:IsAdmin() then return self:throw("You cannot damage this entity!", nil) end
 
 	local dmg = DamageInfo()
