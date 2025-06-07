@@ -29,7 +29,9 @@ function ENT:Initialize()
 		{ "Fire", "Force", "Damage", "NumBullets", "Spread", "Delay", "Sound", "Tracer" },
 		{ "NORMAL", "NORMAL", "NORMAL", "NORMAL", "NORMAL", "NORMAL", "STRING", "STRING" })
 
-	self.Outputs = WireLib.CreateSpecialOutputs(self, { "HitEntity" }, { "ENTITY" })
+	self.Outputs = WireLib.CreateSpecialOutputs(self,
+		{ "HitEntity", "Bullet" },
+		{ "ENTITY", "RANGER" })
 end
 
 function ENT:FireShot()
@@ -65,6 +67,7 @@ function ENT:FireShot()
 	bullet.Force      = self.force
 	bullet.Attacker   = self:GetPlayer()
 	bullet.Callback   = function(attacker, traceres, cdamageinfo)
+		WireLib.TriggerOutput(self, "Bullet", traceres)
 		WireLib.TriggerOutput(self, "HitEntity", traceres.Entity)
 	end
 
