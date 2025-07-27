@@ -174,6 +174,8 @@ __e2setcost(10)
 
 e2function void blastDamage(vector origin, number radius, number damage)
 	if not Enabled:GetBool() then return self:throw("Dealing damage is disabled via wire_expression2_damage_enabled") end
+	if not self.player:IsAdmin() then return self:throw("Damagecore is admin only", nil) end
+
 	util.BlastDamage(self.entity, self.player, origin, math.Clamp(radius, 0, MaxRadius:GetInt()), damage)
 end
 
