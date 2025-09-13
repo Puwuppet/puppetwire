@@ -11,6 +11,7 @@ local function validNPC(entity)
 end
 
 e2function void entity:npcGoWalk(vector rv2)
+	if not self.player:IsAdmin() then return self:throw("This function is admin only") end
 	if not validNPC(this) then return self:throw("Entity e: is not a valid NPC!", nil) end
 	if not isOwner(self, this) then return self:throw("You do not own this NPC!", nil) end
 
@@ -19,6 +20,7 @@ e2function void entity:npcGoWalk(vector rv2)
 end
 
 e2function void entity:npcGoRun(vector rv2)
+	if not self.player:IsAdmin() then return self:throw("This function is admin only") end
 	if not validNPC(this) then return self:throw("Entity e: is not a valid NPC!", nil) end
 	if not isOwner(self, this) then return self:throw("You do not own this NPC!", nil) end
 
@@ -27,6 +29,7 @@ e2function void entity:npcGoRun(vector rv2)
 end
 
 e2function void entity:npcAttack()
+	if not self.player:IsAdmin() then return self:throw("This function is admin only") end
 	if not validNPC(this) then return self:throw("Entity e: is not a valid NPC!", nil) end
 	if not isOwner(self, this) then return self:throw("You do not own this NPC!", nil) end
 
@@ -34,6 +37,7 @@ e2function void entity:npcAttack()
 end
 
 e2function void entity:npcShoot()
+	if not self.player:IsAdmin() then return self:throw("This function is admin only") end
 	if not validNPC(this) then return self:throw("Entity e: is not a valid NPC!", nil) end
 	if not isOwner(self, this) then return self:throw("You do not own this NPC!", nil) end
 
@@ -42,6 +46,7 @@ e2function void entity:npcShoot()
 end
 
 e2function void entity:npcFace(vector rv2)
+	if not self.player:IsAdmin() then return self:throw("This function is admin only") end
 	if not validNPC(this) then return self:throw("Entity e: is not a valid NPC!", nil) end
 	if not isOwner(self, this) then return self:throw("You do not own this NPC!", nil) end
 
@@ -77,6 +82,7 @@ e2function void entity:npcGiveWeapon(string rv2)
 end
 
 e2function void entity:npcStop()
+	if not self.player:IsAdmin() then return self:throw("This function is admin only") end
 	if not validNPC(this) then return self:throw("Entity e: is not a valid NPC!", nil) end
 	if not isOwner(self, this) then return self:throw("You do not own this NPC!", nil) end
 	this:SetSchedule( SCHED_NONE )
@@ -89,6 +95,7 @@ e2function entity entity:npcGetTarget()
 end
 
 e2function void entity:npcSetTarget(entity ent)
+	if not self.player:IsAdmin() then return self:throw("This function is admin only") end
 	if !(IsValid(ent) and (ent:IsNPC() or ent:IsPlayer())) or !validNPC(this) or !isOwner(self, this) then return end
 	this:SetEnemy(ent)
 end
@@ -117,6 +124,7 @@ local NPC_DISP_NUM = setmetatable({
 }, {__index = function() return 0 end})
 
 e2function void entity:npcRelationship(entity rv2, string rv3, rv4)
+	if not self.player:IsAdmin() then return self:throw("This function is admin only") end
 	if not validNPC(this) then return self:throw("Entity e: is not a valid NPC!", 0) end
 	if not isOwner(self, this) then return self:throw("You do not own this NPC!", 0) end
 	if not IsValid(rv2) then return self:throw("Invalid entity (arg 1)!", 0) end
@@ -129,6 +137,7 @@ e2function void entity:npcRelationship(entity rv2, string rv3, rv4)
 end
 
 e2function void entity:npcRelationship(string rv2, string rv3, rv4)
+	if not self.player:IsAdmin() then return self:throw("This function is admin only") end
 	if not validNPC(this) then return self:throw("Entity e: is not a valid NPC!") end
 	if not isOwner(self, this) then return self:throw("You do not own this NPC!") end
 
@@ -141,6 +150,7 @@ e2function void entity:npcRelationship(string rv2, string rv3, rv4)
 end
 
 e2function number entity:npcRelationshipByOwner(entity rv2, string rv3, rv4)
+	if not self.player:IsAdmin() then return self:throw("This function is admin only") end
 	if not validNPC(this) then return self:throw("Entity e: is not a valid NPC!", 0) end
 	if not isOwner(self, this) then return self:throw("You do not own this NPC!", 0) end
 	if not IsValid(rv2) then return self:throw("Invalid entity!", 0) end
