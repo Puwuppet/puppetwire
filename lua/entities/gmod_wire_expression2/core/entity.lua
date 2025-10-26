@@ -908,8 +908,15 @@ end
 
 --- Returns <ent> formatted as a string. Returns "<code>(null)</code>" for invalid entities.
 e2function string toString(entity ent)
-	if not IsValid(ent) then return "(null)" end
-	return tostring(ent)
+	if ent then
+		if ent:IsValid() then
+			return tostring(ent)
+		elseif ent:IsWorld() then
+			return "(world)"
+		end
+	end
+
+	return "(null)"
 end
 
 e2function string entity:toString() = e2function string toString(entity ent)

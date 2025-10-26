@@ -95,6 +95,8 @@ function WireLib.TriggerInput(ent, name, value, ...)
 	end
 end
 
+local newE2Table = WireLib.E2Table.New
+
 --- Array of data types for Wiremod.
 ---@type table<string, { Zero: (fun(): any), Validator: (fun(val: any): boolean) }>
 WireLib.DT = {
@@ -154,7 +156,7 @@ WireLib.DT = {
 	},
 	TABLE = {
 		Zero = function()
-			return { n = {}, ntypes = {}, s = {}, stypes = {}, size = 0 }
+			return newE2Table()
 		end,
 		Validator = function(t)
 			return istable(t)
@@ -1581,13 +1583,13 @@ function WireLib.NotifyGroup(group, msg, severity, chatprint, color)
 	local plys = {}
 
 	if isstring(group) then
-		for _, p in ipairs(player.GetAll()) do
+		for _, p in player.Iterator() do
 			if p:GetUserGroup() == group then
 				plys[#plys + 1] = p
 			end
 		end
 	else
-		for _, p in ipairs(player.GetAll()) do
+		for _, p in player.Iterator() do
 			if table.HasValue(group, p:GetUserGroup()) then
 				plys[#plys + 1] = p
 			end
